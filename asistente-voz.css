@@ -1,0 +1,188 @@
+/* Voice assistant — portfolio widget */
+#avz-launcher {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 400;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 18px 11px 13px;
+  border: 0;
+  border-radius: 999px;
+  background: #052528;
+  color: #f7f2e8;
+  font-family: var(--sans, "Inter", system-ui, sans-serif);
+  font-size: 13.5px;
+  font-weight: 500;
+  letter-spacing: .01em;
+  cursor: pointer;
+  box-shadow: 0 16px 34px -14px rgba(3, 22, 24, .85), 0 0 0 1px rgba(240, 180, 94, .28) inset;
+  transition: transform .22s ease, box-shadow .22s ease;
+}
+#avz-launcher:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 40px -14px rgba(3, 22, 24, .9), 0 0 0 1px rgba(240, 180, 94, .5) inset;
+}
+#avz-launcher .avz-orb {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 30%, #ffe3b8, #f0b45e 52%, #c98f3e);
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+}
+#avz-launcher .avz-orb svg { width: 14px; height: 14px; }
+#avz-launcher.is-live .avz-orb { animation: avz-pulse 1.6s ease-out infinite; }
+@keyframes avz-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(240, 180, 94, .55); }
+  70% { box-shadow: 0 0 0 12px rgba(240, 180, 94, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(240, 180, 94, 0); }
+}
+
+#avz-panel {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 401;
+  width: 372px;
+  max-width: calc(100vw - 28px);
+  border-radius: 24px;
+  background: #052528;
+  color: #f4f1ea;
+  font-family: var(--sans, "Inter", system-ui, sans-serif);
+  box-shadow: 0 30px 70px -24px rgba(2, 16, 18, .9), 0 0 0 1px rgba(244, 241, 234, .1) inset;
+  overflow: hidden;
+  display: none;
+  flex-direction: column;
+  transform-origin: bottom right;
+}
+#avz-panel.is-open { display: flex; animation: avz-in .24s cubic-bezier(.2, .8, .3, 1); }
+@keyframes avz-in {
+  from { opacity: 0; transform: translateY(14px) scale(.97); }
+  to { opacity: 1; transform: none; }
+}
+
+#avz-panel .avz-top {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 16px 16px 13px;
+  border-bottom: 1px solid rgba(244, 241, 234, .1);
+}
+#avz-panel .avz-top .avz-orb { width: 30px; height: 30px; border-radius: 50%; background: radial-gradient(circle at 32% 30%, #ffe3b8, #f0b45e 52%, #c98f3e); display: grid; place-items: center; flex: 0 0 auto; }
+#avz-panel .avz-top .avz-orb svg { width: 15px; height: 15px; }
+#avz-title { font-family: var(--serif, "Fraunces", Georgia, serif); font-size: 17px; line-height: 1.2; letter-spacing: -.01em; }
+#avz-status { font-size: 11.5px; color: #9dbfbd; letter-spacing: .04em; text-transform: uppercase; margin-top: 2px; }
+#avz-close {
+  margin-left: auto;
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  border: 1px solid rgba(244, 241, 234, .16);
+  background: transparent;
+  color: #f4f1ea;
+  cursor: pointer;
+  font-size: 15px;
+  line-height: 1;
+  display: grid; place-items: center;
+}
+#avz-close:hover { background: rgba(244, 241, 234, .1); }
+
+#avz-log {
+  flex: 1;
+  min-height: 210px;
+  max-height: 46vh;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  scrollbar-width: thin;
+}
+#avz-log::-webkit-scrollbar { width: 6px; }
+#avz-log::-webkit-scrollbar-thumb { background: rgba(244, 241, 234, .16); border-radius: 3px; }
+.avz-msg {
+  max-width: 88%;
+  font-size: 14px;
+  line-height: 1.5;
+  padding: 9px 13px;
+  border-radius: 15px;
+  animation: avz-msg .2s ease;
+}
+@keyframes avz-msg { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+.avz-msg.avz-user { align-self: flex-end; background: rgba(240, 180, 94, .16); color: #ffe9c9; border: 1px solid rgba(240, 180, 94, .28); }
+.avz-msg.avz-bot { align-self: flex-start; background: rgba(244, 241, 234, .07); color: #f4f1ea; border: 1px solid rgba(244, 241, 234, .08); }
+.avz-msg.avz-sys { align-self: center; background: transparent; color: #9dbfbd; font-size: 12px; text-align: center; padding: 2px 0; }
+.avz-msg.avz-err { align-self: stretch; max-width: 100%; background: rgba(200, 90, 80, .14); color: #ffd9d3; font-size: 12.5px; border: 1px solid rgba(200, 90, 80, .3); }
+
+#avz-foot {
+  border-top: 1px solid rgba(244, 241, 234, .1);
+  padding: 12px 14px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+#avz-actions { display: flex; justify-content: center; }
+#avz-mic {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  border: 0;
+  cursor: pointer;
+  background: #f0b45e;
+  color: #052528;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 10px 22px -10px rgba(240, 180, 94, .9);
+  transition: transform .18s ease, background .18s ease;
+}
+#avz-mic:hover { transform: translateY(-1px); }
+#avz-mic svg { width: 22px; height: 22px; }
+#avz-mic.is-live { background: #f7f2e8; }
+#avz-mic.is-live::after { content: ""; position: absolute; }
+#avz-mic.is-live svg { animation: avz-breathe 1.5s ease-in-out infinite; }
+@keyframes avz-breathe { 50% { transform: scale(.86); } }
+#avz-mic[disabled] { opacity: .5; cursor: progress; }
+
+.avz-hint { text-align: center; font-size: 11.5px; color: #9dbfbd; line-height: 1.45; }
+.avz-hint a { color: #f0b45e; text-decoration: underline; text-underline-offset: 2px; }
+
+#avz-text {
+  display: flex;
+  gap: 8px;
+}
+#avz-input {
+  flex: 1;
+  min-width: 0;
+  background: rgba(244, 241, 234, .06);
+  border: 1px solid rgba(244, 241, 234, .12);
+  border-radius: 12px;
+  padding: 9px 12px;
+  color: #f4f1ea;
+  font-family: inherit;
+  font-size: 13.5px;
+  outline: none;
+}
+#avz-input:focus { border-color: rgba(240, 180, 94, .55); }
+#avz-input::placeholder { color: #7e9c9a; }
+#avz-send {
+  border: 1px solid rgba(240, 180, 94, .38);
+  background: rgba(240, 180, 94, .12);
+  color: #f0b45e;
+  border-radius: 12px;
+  padding: 0 13px;
+  cursor: pointer;
+  font-size: 13px;
+  font-family: inherit;
+}
+#avz-send:hover { background: rgba(240, 180, 94, .22); }
+
+@media (max-width: 520px) {
+  #avz-launcher { right: 14px; bottom: 14px; padding: 10px 15px 10px 11px; font-size: 12.5px; }
+  #avz-panel { right: 10px; left: 10px; bottom: 10px; width: auto; max-width: none; }
+  #avz-log { max-height: 40vh; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #avz-panel.is-open, .avz-msg { animation: none; }
+  #avz-launcher.is-live .avz-orb, #avz-mic.is-live svg { animation: none; }
+}
