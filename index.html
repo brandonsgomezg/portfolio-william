@@ -70,6 +70,11 @@
     padding:8px 15px;border-radius:999px;transition:background .2s,color .2s;
   }
   .nav-links a:hover{background:#f0ece2;color:var(--ink)}
+  .nav-links a.active{background:#f0ece2;color:var(--ink)}
+  .nav-links a.active::after{
+    content:"";display:block;height:2px;width:14px;margin:3px auto -4px;
+    border-radius:2px;background:var(--teal);opacity:.9;
+  }
   .nav-cta{
     display:inline-flex;align-items:center;gap:7px;
     background:var(--teal);color:#f4fffc;font-size:13.5px;font-weight:600;
@@ -941,6 +946,28 @@
     el.style.transitionDelay = (i % 3) * 90 + 'ms';
     io.observe(el);
   });
+</script>
+<script>
+/* Nav: marca la sección que se está viendo */
+(function(){
+  var links = Array.prototype.slice.call(document.querySelectorAll('.nav-links a[href^="#"]'));
+  var targets = links.map(function(a){
+    return document.querySelector(a.getAttribute('href'));
+  }).filter(Boolean);
+  if (!targets.length) return;
+  var visible = new Set();
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (e.isIntersecting) visible.add(e.target.id);
+      else visible.delete(e.target.id);
+    });
+    var current = targets.filter(function(t){ return visible.has(t.id); })[0];
+    links.forEach(function(a){
+      a.classList.toggle('active', !!current && a.getAttribute('href') === '#' + current.id);
+    });
+  }, {rootMargin:'-45% 0px -45% 0px', threshold:0});
+  targets.forEach(function(t){ io.observe(t); });
+})();
 </script>
 <!-- voice assistant -->
 <link rel="stylesheet" href="/asistente-voz.css">
